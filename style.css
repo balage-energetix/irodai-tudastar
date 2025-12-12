@@ -1,150 +1,273 @@
-/* Alapvető beállítások */
+:root {
+    --bg-color: #f4f6f9;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --input-border: #ced4da;
+    --primary-color: #0d6efd; /* Bootstrap Primary */
+    --key-bg: #e9ecef; 
+    --key-border: #adb5bd; 
+    --key-text: #495057; 
+    --footer-height: 30px; /* VÁLTOZÁS: Még keskenyebb lábléc */
+}
+
+/* ÚJ: JELSZÓ VÉDELMI FELÜLET STÍLUS */
+#auth-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+.auth-card {
+    max-width: 400px;
+    width: 90%;
+}
+body.dark-mode .auth-card {
+    background-color: var(--card-bg);
+}
+
+/* Fő konténer és lábléc beállítások */
+html, body {
+    height: 100%;
+}
 body {
-    padding-top: 60px; /* Hely a fixed-top navbar alatt */
-    padding-bottom: 30px; /* Hely a fixed-bottom footer felett */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     transition: background-color 0.3s, color 0.3s;
-    background-color: #f4f6f9; /* Alap világos háttér */
+    padding-bottom: var(--footer-height); 
+}
+.page-container {
+    /* Változás: a fejléc (56px) és a lábléc magasságát is figyelembe veszi */
+    min-height: calc(100vh - 56px - var(--footer-height)); 
+    padding-bottom: 20px;
 }
 
-/* Oldal szekciók kezelése */
-.page-section {
-    padding-bottom: 50px;
-    min-height: calc(100vh - 120px); /* Gondoskodik arról, hogy a tartalom legalább a láblécig érjen */
+/* Éjszakai Mód */
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --input-border: #444;
+    --primary-color: #5d9bff;
+    --key-bg: #343a40; 
+    --key-border: #495057; 
+    --key-text: #e0e0e0; 
 }
 
-/* Navigáció és kiemelt elemek */
-.navbar-brand, .navbar-nav .nav-link {
-    transition: color 0.3s;
+body.dark-mode .card, 
+body.dark-mode .list-group-item,
+body.dark-mode .modal-content,
+body.dark-mode .table {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: #444;
 }
-.navbar-dark .navbar-nav .nav-link:hover {
-    color: rgba(255, 255, 255, 0.9);
+body.dark-mode .table-light {
+    background-color: #333;
+    color: #fff;
+}
+body.dark-mode input, body.dark-mode textarea, body.dark-mode select {
+    background-color: #2c2c2c;
+    color: white;
+    border-color: #555;
+}
+body.dark-mode .context-menu {
+    background: var(--card-bg);
+    border: 1px solid var(--input-border);
+}
+body.dark-mode .context-menu div:hover {
+    background-color: #333;
 }
 
-/* Feature kártyák az főoldalon */
+/* NAVBAR IGAZÍTÁS */
+.navbar-nav.ms-auto .nav-item.dropdown {
+    /* Enyhe balra tolás, hogy a lenyíló lista is látszódjon ha szélesebb */
+    margin-left: 0.5rem; 
+}
+.navbar-nav.ms-auto .dropdown-menu {
+    /* Annak biztosítása, hogy a legördülő menü balra nyíljon, ha a jobb szélre kerül */
+    right: 0;
+    left: auto;
+}
+/* Kisebb képernyőn maradjon alapértelmezett */
+@media (max-width: 991.98px) {
+    .navbar-nav.ms-auto .dropdown-menu {
+        right: auto;
+        left: 0;
+    }
+}
+
+
+/* LÁBLÉC RÖGZÍTÉSE */
+.fixed-bottom-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: var(--footer-height);
+    line-height: var(--footer-height); /* Középre igazítás */
+    z-index: 1030;
+}
+/* A py-1 a bootstrapben 0.25rem padding (kb. 4px) így a teljes magasság (padding + font-size) minimális */
+
+
+/* Feature kártyák */
 .feature-card {
+    background-color: var(--card-bg);
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
     border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
-
-/* Gáz Átváltó input hover effekt */
-.input-hover-effect:focus-within {
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    border-color: #86b7fe;
-}
-
-/* Billentyűkombinációk stílusa */
-.shortcut-card {
-    border: 1px solid #ddd;
-    border-left: 5px solid #0d6efd;
-    border-radius: 8px;
-    transition: background-color 0.2s;
-}
-.shortcut-card:hover {
+.feature-card.disabled-card {
+    cursor: not-allowed;
     background-color: #f8f9fa;
+    opacity: 0.7;
 }
-.shortcut-key {
-    background-color: #e9ecef;
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-weight: bold;
-    color: #333;
-    white-space: nowrap;
-    display: inline-block;
+body.dark-mode .feature-card.disabled-card {
+    background-color: #2c2c2c;
 }
 
-/* Térkép Kontexus menü (jobb gomb) */
+/* Lean Trükkök Layout */
+.shortcut-row {
+    background-color: var(--card-bg);
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-left: 5px solid var(--primary-color); 
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.shortcut-keys {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.1em;
+    min-width: 150px;
+    text-align: right;
+    color: var(--primary-color); 
+    display: flex; 
+    gap: 5px; 
+    align-items: center;
+    justify-content: flex-end;
+}
+/* Plusz jel stílusa a billentyűk között */
+.plus-icon {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 900;
+    color: #999;
+    font-size: 1.2em;
+}
+body.dark-mode .plus-icon {
+    color: #666;
+}
+
+.key-icon {
+    background-color: var(--key-bg);
+    color: var(--key-text);
+    border: 1px solid var(--key-border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    /* Eredeti árnyék */
+    box-shadow: 0 3px 0 var(--key-border);
+    transition: all 0.1s ease-out;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 1;
+    user-select: none;
+    text-align: center;
+}
+/* Hover és Active együtt: lenyomott hatás kurzor felett is */
+.key-icon:hover, .key-icon:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--key-border);
+}
+
+.arrow-icon {
+    margin: 0 15px;
+    color: #aaa;
+}
+.shortcut-desc {
+    font-weight: 500;
+}
+
+/* Átváltó Inputs */
+.input-hover-effect {
+    border: 1px solid transparent;
+    padding: 5px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+.input-hover-effect:hover {
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.1);
+}
+
+/* Térkép Context Menu */
 .context-menu {
     display: none;
     position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    padding: 5px 0;
     z-index: 1000;
-    border-radius: 4px;
+    background: var(--card-bg); 
+    border: 1px solid var(--input-border); 
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    overflow: hidden;
 }
 .context-menu div {
-    padding: 8px 12px;
+    padding: 10px 15px;
     cursor: pointer;
-    white-space: nowrap;
-    transition: background-color 0.1s;
+    font-size: 14px;
 }
 .context-menu div:hover {
     background-color: #f0f0f0;
 }
-.leaflet-container {
-    height: 100%;
+body.dark-mode .context-menu div:hover {
+    background-color: #333;
 }
 
-/* Galéria - Kép stílusok */
-#gallery-viewer .carousel-item img {
-    max-height: 70vh; 
+/* Check-lista */
+.form-check-input {
+    border: 2px solid #6c757d;
+}
+.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+/* Galéria */
+.carousel-inner img {
+    height: 500px;
     object-fit: contain;
-    margin: auto;
-    display: block;
 }
-.thumbnail-img {
+.thumb-img {
+    height: 80px;
     width: 100%;
-    height: 100px;
-    object-fit: cover;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.2s;
+    opacity: 0.6;
+    object-fit: cover;
+    border-radius: 4px;
 }
-.thumbnail-img:hover {
-    border-color: #0d6efd;
+.thumb-img:hover, .thumb-img.active {
+    opacity: 1;
+    border: 3px solid var(--primary-color);
 }
 
-/* Sötét mód beállítások */
-body.dark-mode {
-    background-color: #212529 !important; 
-    color: #f8f9fa; 
-}
-.dark-mode .card, 
-.dark-mode .bg-light,
-.dark-mode .context-menu,
-.dark-mode #checklist-content,
-.dark-mode .dropdown-menu {
-    background-color: #343a40 !important;
-    border-color: #495057 !important;
-    color: #f8f9fa !important;
-}
-.dark-mode .navbar-brand,
-.dark-mode .navbar-nav .nav-link,
-.dark-mode .text-muted,
-.dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5,
-.dark-mode .dropdown-item {
-    color: #f8f9fa !important;
-}
-.dark-mode .dropdown-item:hover {
-    background-color: #495057 !important;
-}
-.dark-mode .form-control,
-.dark-mode .form-select,
-.dark-mode .form-control-color {
-    background-color: #495057;
-    border-color: #6c757d;
-    color: #f8f9fa;
-}
-.dark-mode .form-control:focus,
-.dark-mode .form-select:focus {
-    border-color: #0dcaf0; /* Kék helyett világosabb élek */
-    box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25);
-}
-.dark-mode .shortcut-key {
-    background-color: #495057;
-    color: #f8f9fa;
-}
-.dark-mode .shortcut-card {
-    border: 1px solid #495057;
-    border-left: 5px solid #0dcaf0; /* Más szín a kiemelésre */
-}
-.dark-mode .shortcut-card:hover {
-    background-color: #495057 !important;
+/* Vizualizáló input */
+.viz-input {
+    width: 60px;
+    padding: 2px;
+    text-align: center;
 }

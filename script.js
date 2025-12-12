@@ -1,3 +1,24 @@
+// --- JELSZÓ VÉDELEM LOGIKA ---
+const CORRECT_PASSWORD = "Kutyamacska9"; // Az anyádat lesed a kódomat te csövesbánat xD
+
+function checkPassword() {
+    const input = document.getElementById('password-input').value;
+    const message = document.getElementById('auth-message');
+    const authScreen = document.getElementById('auth-screen');
+    const appContainer = document.getElementById('app-container');
+
+    if (input === CORRECT_PASSWORD) {
+        authScreen.classList.add('d-none');
+        appContainer.classList.remove('d-none');
+        // A kód többi része itt indul el
+        initApp(); 
+    } else {
+        message.classList.remove('d-none');
+        setTimeout(() => { message.classList.add('d-none'); }, 3000);
+    }
+}
+
+
 // --- Óra és Dátum Kezelés ---
 function updateClock() {
     const now = new Date();
@@ -17,7 +38,7 @@ function updateClock() {
     if (exportHeaderEl) exportHeaderEl.innerText = `Készült: ${dateStr} ${timeStr}`;
 }
 setInterval(updateClock, 1000);
-updateClock();
+
 
 // --- Oldal Váltás ---
 function showPage(pageId) {
@@ -31,7 +52,7 @@ function showPage(pageId) {
     }
     // Számla kalkulátor frissítése, ha megnyitjuk
     if(pageId === 'invoice-calc') {
-        calculateInvoice();
+        loadProviderTariffs();
     }
 }
 
@@ -56,7 +77,6 @@ function saveConversionFactors() {
     if (calcFactorEl) {
         calcFactorEl.value = kwhFactor;
     }
-    // Az Átváltót nem frissítjük automatikusan, a felhasználónak kell interakcióba lépnie vele.
     calculateInvoice(); // A számlakalkulátor azonnali frissítése
 }
 
@@ -110,7 +130,8 @@ function createKeyHtml(keyString) {
     const parts = keyString.split(' + ').map(part => {
         return `<span class="key-icon">${part}</span>`;
     });
-    return parts.join('');
+    // Összefűzzük a részeket, közéjük plusz jelet téve
+    return parts.join(' <span class="plus-icon">+</span> ');
 }
 
 const shContainer = document.getElementById('shortcut-container');
@@ -161,7 +182,7 @@ function calcConverter(source) {
 let map = L.map('map-container').setView([46.229, 17.365], 14);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'OpenStreetMap',
-    crossOrigin: true // Fontos a PDF exporthoz!
+    crossOrigin: true 
 }).addTo(map);
 
 // Context Menu Logic
@@ -227,8 +248,6 @@ function addNewDataRow() {
     tr.innerHTML = tds;
     tbody.appendChild(tr);
 }
-// Init 1 sor (csak a táblázat megjelenítéséhez)
-addNewDataRow();
 
 function updateChart() {
     const rows = document.querySelectorAll('.data-row');
@@ -286,7 +305,7 @@ function updateChart() {
 // --- 5. KÉPNÉZEGETŐ ---
 document.getElementById('folderInput').addEventListener('change', function(event) {
     const loadingMessage = document.getElementById('loading-message');
-    if (loadingMessage) loadingMessage.classList.remove('d-none'); // Mutatjuk a spinnert
+    if (loadingMessage) loadingMessage.classList.remove('d-none'); 
 
     const files = Array.from(event.target.files).filter(f => f.type.startsWith('image/'));
     const carouselInner = document.getElementById('carousel-items');
@@ -295,7 +314,6 @@ document.getElementById('folderInput').addEventListener('change', function(event
     carouselInner.innerHTML = '';
     thumbsContainer.innerHTML = '';
 
-    // Aszinkron betöltés kis késleltetéssel, hogy a spinner látható legyen
     setTimeout(() => {
         if(files.length > 0) {
             document.getElementById('gallery-viewer').style.display = 'block';
@@ -318,7 +336,7 @@ document.getElementById('folderInput').addEventListener('change', function(event
         } else {
              document.getElementById('gallery-viewer').style.display = 'none';
         }
-        if (loadingMessage) loadingMessage.classList.add('d-none'); // Rejtjük a spinnert
+        if (loadingMessage) loadingMessage.classList.add('d-none'); 
     }, 50);
 });
 
@@ -343,7 +361,6 @@ const todos = {
 function renderTodos() {
     ['daily', 'weekly', 'monthly', 'yearly'].forEach(type => {
         const ul = document.getElementById(`list-${type}`);
-        // Csak akkor rendereljük újra, ha üres (hogy a pipák megmaradjanak)
         if(ul && ul.children.length === 0) {
             ul.innerHTML = todos[type].map(task => `
                 <li class="list-group-item d-flex align-items-center">
@@ -360,14 +377,13 @@ function addTodo(type) {
         const ul = document.getElementById(`list-${type}`);
         if(!ul) return;
         
-        // Beszúrás a gomb elé
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex align-items-center';
         li.innerHTML = `<input class="form-check-input me-2" type="checkbox"><span>${newTask}</span>`;
         ul.insertBefore(li, ul.lastElementChild);
     }
 }
-renderTodos(); // Első renderelés
+renderTodos(); 
 
 function exportChecklistPDF() {
     const element = document.getElementById('checklist-content');
@@ -402,24 +418,58 @@ ${content}
     
     const blob = new Blob([textData], { type: "text/plain" });
     const anchor = document.createElement("a");
-    // Fájlnév formátum a könnyebb rendezéshez
     anchor.download = `[Tudastar_TXT]_${category.replace(/\s/g, '_')}_${Date.now()}.txt`;
     anchor.href = window.URL.createObjectURL(blob);
     anchor.click();
 }
 
 // --- 8. SZÁMLA KALKULÁTOR ---
-const gasTariffs = [
-    // Kb. 2024-es MVM/Eon tarifák (kWh egységben)
-    { name: "Alap (rezsicsökkentett)", unit: "kWh", vat: 27, base: 10.20, editablePrice: 10.20, limit: 6013 },
-    { name: "Lakossági piaci (limit felett)", unit: "kWh", vat: 27, base: 70.10, editablePrice: 70.10, limit: null },
-];
+
+const allGasTariffs = {
+    "MVM": [
+        { name: "Alap (rezsicsökkentett)", unit: "kWh", vat: 27, base: 10.20, editablePrice: 10.20, limit: 6013 },
+        { name: "Lakossági piaci (limit felett)", unit: "kWh", vat: 27, base: 70.10, editablePrice: 70.10, limit: null },
+    ],
+    "EON": [
+        { name: "E.ON Alap", unit: "kWh", vat: 27, base: 10.30, editablePrice: 10.30, limit: 6013 },
+        { name: "E.ON Piaci (limit felett)", unit: "kWh", vat: 27, base: 72.00, editablePrice: 72.00, limit: null },
+    ],
+    "E2": [
+        { name: "E2 Standard", unit: "kWh", vat: 27, base: 10.15, editablePrice: 10.15, limit: 6013 },
+        { name: "E2 Prémium (limit felett)", unit: "kWh", vat: 27, base: 69.90, editablePrice: 69.90, limit: null },
+    ]
+};
 let currentTariffs = [];
 
-function renderTariffTable() {
-    const savedTariffs = JSON.parse(localStorage.getItem('gasTariffs'));
-    currentTariffs = savedTariffs || gasTariffs;
+function loadProviderTariffs() {
+    const providerRadios = document.getElementsByName('calc-provider');
+    let selectedProvider = "MVM";
+    for(const radio of providerRadios) {
+        if(radio.checked) {
+            selectedProvider = radio.value;
+            break;
+        }
+    }
+    
+    const providerNameEl = document.getElementById('current-provider-name');
+    if(providerNameEl) providerNameEl.innerText = selectedProvider;
 
+    const savedTariffsString = localStorage.getItem(`gasTariffs_${selectedProvider}`);
+    let savedTariffs = savedTariffsString ? JSON.parse(savedTariffsString) : null;
+
+    currentTariffs = allGasTariffs[selectedProvider].map((baseTariff, index) => {
+        const storedPrice = savedTariffs && savedTariffs[index] ? savedTariffs[index].editablePrice : null;
+        return {
+            ...baseTariff,
+            editablePrice: storedPrice !== null ? storedPrice : baseTariff.base
+        };
+    });
+
+    renderTariffTable();
+    calculateInvoice(); 
+}
+
+function renderTariffTable() {
     const tbody = document.getElementById('tariff-table-body');
     if(!tbody) return;
     tbody.innerHTML = '';
@@ -433,22 +483,30 @@ function renderTariffTable() {
             <td>${t.vat}%</td>
             <td>
                 <input type="number" id="tariff-${index}" class="form-control form-control-sm tariff-input" 
-                       value="${t.editablePrice.toFixed(2)}" step="0.01" min="0" 
-                       oninput="saveTariffs(); calculateInvoice();">
+                        value="${t.editablePrice.toFixed(2)}" step="0.01" min="0" 
+                        oninput="saveTariffs(); calculateInvoice();">
             </td>`;
         tbody.appendChild(tr);
     });
 }
 
 function saveTariffs() {
+    const providerRadios = document.getElementsByName('calc-provider');
+    let selectedProvider = "MVM";
+    for(const radio of providerRadios) {
+        if(radio.checked) {
+            selectedProvider = radio.value;
+            break;
+        }
+    }
+    
     currentTariffs.forEach((t, index) => {
         const input = document.getElementById(`tariff-${index}`);
         if (input) {
-            // Frissítsük a currentTariffs tömböt az aktuális értékekkel
             t.editablePrice = parseFloat(input.value) || t.base;
         }
     });
-    localStorage.setItem('gasTariffs', JSON.stringify(currentTariffs));
+    localStorage.setItem(`gasTariffs_${selectedProvider}`, JSON.stringify(currentTariffs));
 }
 
 function calculateInvoice() {
@@ -457,7 +515,7 @@ function calculateInvoice() {
     const factorKwhEl = document.getElementById('calcFactorKwh');
     const resultEl = document.getElementById('calcResult');
     
-    if (!inputAmountEl || !inputUnitEl || !factorKwhEl || !resultEl) return;
+    if (!inputAmountEl || !inputUnitEl || !factorKwhEl || !resultEl || currentTariffs.length < 2) return;
     
     const inputAmount = parseFloat(inputAmountEl.value) || 0;
     const inputUnit = inputUnitEl.value;
@@ -470,7 +528,6 @@ function calculateInvoice() {
     if (inputUnit === 'm3') {
         amountInKwh = inputAmount * factorKwh;
     } else if (inputUnit === 'mj') {
-        // MJ -> m³ -> kWh konverzió
         amountInKwh = (inputAmount / factorMj) * factorKwh;
     } else { // kWh
         amountInKwh = inputAmount;
@@ -478,23 +535,18 @@ function calculateInvoice() {
     
     // 2. Számítás
     let totalCost = 0;
-    const limitKwh = currentTariffs[0] ? currentTariffs[0].limit : 6013;
-    const priceStandard = currentTariffs[0] ? currentTariffs[0].editablePrice : 10.20;
-    const priceMarket = currentTariffs[1] ? currentTariffs[1].editablePrice : 70.10;
+    const limitKwh = currentTariffs[0].limit || 6013;
+    const priceStandard = currentTariffs[0].editablePrice;
+    const priceMarket = currentTariffs[1].editablePrice;
     const vatFactor = 1.27; // 27% ÁFA
 
     if (amountInKwh <= limitKwh) {
-        // Teljesen limiten belül
         totalCost = amountInKwh * priceStandard * vatFactor;
     } else {
-        // Limit feletti fogyasztás
         const standardConsumption = limitKwh;
         const marketConsumption = amountInKwh - limitKwh;
         
-        // Limit alatti rész (ÁFÁ-val)
         totalCost += standardConsumption * priceStandard * vatFactor;
-        
-        // Limit feletti rész (ÁFÁ-val)
         totalCost += marketConsumption * priceMarket * vatFactor;
     }
     
@@ -505,8 +557,9 @@ function calculateInvoice() {
 
 // --- 9. ALKALMAZÁS INDÍTÁSA (INIT) ---
 function initApp() {
-    // 1. Sötét mód betöltése (Alapértelmezett: Dark Mode)
-    // Ha még nincs tárolt érték, vagy 'true', akkor bekapcsoljuk a dark mode-ot
+    // Csak akkor fut le, ha a jelszó helyes volt
+
+    // 1. Sötét mód betöltése
     const isDarkMode = localStorage.getItem('darkMode') === 'true' || localStorage.getItem('darkMode') === null; 
     const darkModeSwitch = document.getElementById('darkModeSwitch');
     
@@ -523,7 +576,7 @@ function initApp() {
     const bgColorPicker = document.getElementById('bgColorPicker');
 
     if (savedColor) {
-        changeBgColor(savedColor); // Ez a függvény menti is
+        changeBgColor(savedColor);
         if (bgColorPicker) bgColorPicker.value = savedColor;
     }
     
@@ -539,15 +592,28 @@ function initApp() {
     if (convFactorMjInput) convFactorMjInput.value = savedMjFactor;
     if (calcFactorKwhInput) calcFactorKwhInput.value = savedKwhFactor;
     
-    // 4. Számla kalkulátor tarifák betöltése és első kalkuláció
-    renderTariffTable();
+    // 4. Számla kalkulátor provider és tarifák betöltése és első kalkuláció
+    loadProviderTariffs();
     
-    // 5. Vizualizáló chart frissítése (hogy az 1. sor megjelenjen a táblázat alatt)
+    // 5. Vizualizáló chart frissítése
     updateChart();
 
-    // 6. Oldal megjelenítése (Kezdőoldal)
+    // 6. Óra indítása
+    updateClock();
+
+    // 7. Oldal megjelenítése (Kezdőoldal)
     showPage('home');
 }
 
-// Alkalmazás indítása
-document.addEventListener('DOMContentLoaded', initApp);
+// Alkalmazás indítása: Jelszó mezőre vár
+document.addEventListener('DOMContentLoaded', () => {
+    // Enter gomb a jelszómezőn belépést triggerel
+    const passwordInput = document.getElementById('password-input');
+    if (passwordInput) {
+        passwordInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    }
+});
