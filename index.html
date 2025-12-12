@@ -15,7 +15,7 @@
         --:--:--
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" onclick="showPage('home')"><i class="fas fa-briefcase"></i> Irodai Asszisztens</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -23,14 +23,41 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('lean')">Trükkök</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('converter')">Átváltó</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('invoice-calc')">Számla Kalkulátor</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('map')">Térkép</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('chart')">Vizualizáló</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('gallery')">Galéria</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('checklist')">Check-lista</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-light ms-2" href="#" onclick="showPage('notes')">Feljegyzés</a></li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="officeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-desktop"></i> Irodai Eszközök
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="officeDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="showPage('lean')">Trükkök</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('notes')">Feljegyzés</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="alert('Ez a funkció fejlesztés alatt áll.')">Ügyirat Nyilvántartó</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('home')">Főoldal</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="techDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-hard-hat"></i> Műszaki Eszközök
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="techDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="showPage('checklist')">Check-lista</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('map')">Térkép</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('gallery')">Galéria</a></li>
+                            </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="financeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-money-check-alt"></i> Elszámolási Eszközök
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="financeDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="showPage('invoice-calc')">Számla Kalkulátor</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('converter')">Átváltó</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('chart')">Vizualizáló</a></li>
+                            </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -49,6 +76,7 @@
             <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('chart')"><div class="card-body text-center"><i class="fas fa-chart-line fa-3x mb-3 text-warning"></i><h5>Vizualizáló</h5></div></div></div>
             <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('gallery')"><div class="card-body text-center"><i class="fas fa-images fa-3x mb-3 text-info"></i><h5>Képtár</h5></div></div></div>
             <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('checklist')"><div class="card-body text-center"><i class="fas fa-tasks fa-3x mb-3 text-secondary"></i><h5>Check-lista</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('notes')"><div class="card-body text-center"><i class="fas fa-edit fa-3x mb-3 text-dark"></i><h5>Feljegyzés</h5></div></div></div>
         </div>
     </div>
 
@@ -106,6 +134,15 @@
     <div id="invoice-calc" class="page-section container mt-4 d-none">
         <div class="card shadow p-4 mx-auto" style="max-width: 900px;">
             <h2 class="text-center mb-4"><i class="fas fa-file-invoice-dollar"></i> Univerzális Számla Kalkulátor</h2>
+            
+            <div class="mb-4">
+                <label class="form-label fw-bold">Válasszon szolgáltatót és tarifát:</label>
+                <select id="calcProvider" class="form-select form-select-lg" onchange="loadTariffs(); calculateInvoice();">
+                    <option value="MVM">MVM (Alap) – Lakossági</option>
+                    <option value="EON">E.ON – Versenypiaci</option>
+                    <option value="E2">E2 – Kiemelt Vevői</option>
+                </select>
+            </div>
             <div class="row g-3 mb-4 align-items-end">
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Felhasznált mennyiség (választható egység):</label>
@@ -131,7 +168,7 @@
                 </div>
             </div>
 
-            <h4 class="mb-3 mt-4">Aktuális Díjszabás (Lakossági Egyetemes Szolgáltatás)</h4>
+            <h4 class="mb-3 mt-4">Aktuális Díjszabás</h4>
             <div class="table-responsive">
                 <table class="table table-bordered table-sm">
                     <thead class="table-info">
@@ -222,7 +259,8 @@
             <button class="btn btn-danger" onclick="exportChecklistPDF()"><i class="fas fa-file-pdf"></i> Exportálás (Tudástár/PDF)</button>
         </div>
         <div id="checklist-content" class="p-3 bg-white text-dark">
-            <div class="text-end text-muted mb-2 small export-date-header"></div> <div class="row g-3">
+            <div class="text-end text-muted mb-2 small export-date-header"></div> 
+            <div class="row g-3">
                 <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-info text-white p-2 text-center rounded">Napi</h5><ul class="list-group list-group-flush" id="list-daily"></ul></div></div>
                 <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-success text-white p-2 text-center rounded">Heti</h5><ul class="list-group list-group-flush" id="list-weekly"></ul></div></div>
                 <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-warning text-dark p-2 text-center rounded">Havi</h5><ul class="list-group list-group-flush" id="list-monthly"></ul></div></div>
@@ -255,7 +293,7 @@
         </div>
     </div>
 
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050; padding-bottom: 50px !important;">
         <div class="btn-group dropup">
             <button type="button" class="btn btn-secondary dropdown-toggle rounded-circle shadow" data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;">
                 <i class="fas fa-cog"></i>
@@ -277,9 +315,9 @@
         </div>
     </div>
     
-    <footer class="footer mt-auto py-3 bg-light border-top">
+    <footer class="footer py-2 bg-light border-top fixed-bottom" style="z-index: 1030;">
         <div class="container text-center">
-            <span class="text-muted">© 2024 Irodai Tudástár | Nagyatád - Verzió 1.1</span>
+            <span class="text-muted small">© 2024 Irodai Tudástár | Nagyatád - Verzió 1.1</span>
         </div>
     </footer>
 
@@ -287,6 +325,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js"></script> 
 </body>
 </html>
