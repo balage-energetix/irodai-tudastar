@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irodai Tudástár - Nagyatád</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" onclick="showPage('home')"><i class="fas fa-briefcase"></i> Irodai Asszisztens</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown">Funkciók</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="showPage('lean')">Lean Trükkök</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('converter')">Mértékegység Átváltó</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('map')">Térkép</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('chart')">Vizualizáló</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('gallery')">Képnézegető</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('checklist')">Check-lista</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="showPage('notes')"><i class="fas fa-pen"></i> Feljegyzés írása</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home" class="page-section container mt-5">
+        <div class="text-center mb-5">
+            <h1>Üdvözöljük a Tudástárban</h1>
+            <p class="lead">Válasszon az alábbi funkciók közül</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('lean')"><div class="card-body text-center"><i class="fas fa-keyboard fa-3x mb-3 text-primary"></i><h5 class="card-title">Lean Trükkök</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('converter')"><div class="card-body text-center"><i class="fas fa-burn fa-3x mb-3 text-danger"></i><h5 class="card-title">Gáz Átváltó</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('map')"><div class="card-body text-center"><i class="fas fa-map-marked-alt fa-3x mb-3 text-success"></i><h5 class="card-title">Térkép</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('chart')"><div class="card-body text-center"><i class="fas fa-chart-bar fa-3x mb-3 text-warning"></i><h5 class="card-title">Vizualizáló</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('gallery')"><div class="card-body text-center"><i class="fas fa-images fa-3x mb-3 text-info"></i><h5 class="card-title">Képtár</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('checklist')"><div class="card-body text-center"><i class="fas fa-tasks fa-3x mb-3 text-secondary"></i><h5 class="card-title">Check-lista</h5></div></div></div>
+        </div>
+    </div>
+
+    <div id="lean" class="page-section container mt-4 d-none">
+        <h2><i class="fas fa-keyboard"></i> Billentyűkombinációk</h2>
+        <div class="row" id="shortcut-container">
+            </div>
+    </div>
+
+    <div id="converter" class="page-section container mt-4 d-none">
+        <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+            <h3 class="text-center mb-4">Földgáz Átváltó</h3>
+            <div class="mb-3">
+                <label class="form-label">Mennyiség (m³)</label>
+                <input type="number" id="gasInput" class="form-control form-control-lg" placeholder="pl. 100" oninput="convertGas()">
+            </div>
+            <div class="row text-center mt-4">
+                <div class="col-6">
+                    <div class="p-3 bg-light rounded">
+                        <h4>kWh</h4>
+                        <span id="kwhOutput" class="display-6 text-primary">0</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 bg-light rounded">
+                        <h4>MJ</h4>
+                        <span id="mjOutput" class="display-6 text-danger">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="page-section container-fluid mt-4 d-none" style="height: 80vh;">
+        <div id="map-container" style="width: 100%; height: 100%;"></div>
+        <p class="text-muted text-center mt-2">Kattints jobb gombbal a térképre jelölő elhelyezéséhez!</p>
+    </div>
+
+    <div id="chart" class="page-section container mt-4 d-none">
+        <h2>Adat Vizualizáció</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <h5>Adatok felvétele</h5>
+                    <button class="btn btn-success mb-2" onclick="addNewDataRow()">+ Új adatsor</button>
+                    <div id="data-inputs">
+                        </div>
+                    <button class="btn btn-primary w-100 mt-3" onclick="updateChart()">Diagram Frissítése</button>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="gallery" class="page-section container mt-4 d-none">
+        <div class="text-center mb-4">
+            <label class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-folder-open"></i> Mappa Tallózása
+                <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+            </label>
+        </div>
+        <div id="gallery-viewer" class="carousel slide shadow rounded" data-bs-ride="false" style="display:none;">
+            <div class="carousel-inner" id="carousel-items"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#gallery-viewer" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#gallery-viewer" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="row mt-3" id="thumbnails"></div>
+    </div>
+
+    <div id="checklist" class="page-section container mt-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Feladatlista</h2>
+            <button class="btn btn-danger" onclick="exportChecklistPDF()"><i class="fas fa-file-pdf"></i> Exportálás PDF-be</button>
+        </div>
+        <div class="row" id="checklist-content">
+            <div class="col-md-3"><h5 class="bg-info text-white p-2">Napi</h5><ul class="list-group" id="list-daily"></ul></div>
+            <div class="col-md-3"><h5 class="bg-success text-white p-2">Heti</h5><ul class="list-group" id="list-weekly"></ul></div>
+            <div class="col-md-3"><h5 class="bg-warning text-dark p-2">Havi</h5><ul class="list-group" id="list-monthly"></ul></div>
+            <div class="col-md-3"><h5 class="bg-primary text-white p-2">Éves</h5><ul class="list-group" id="list-yearly"></ul></div>
+        </div>
+    </div>
+
+    <div id="notes" class="page-section container mt-4 d-none">
+        <div class="card p-4 mx-auto" style="max-width: 700px;">
+            <h3>Új Feljegyzés</h3>
+            <div class="mb-3">
+                <label>Ügykör</label>
+                <select id="noteCategory" class="form-select">
+                    <option>Közterület felbontás</option>
+                    <option>Tervezői hozzájárulás</option>
+                    <option>Közvilágítási hiba</option>
+                    <option>Bérlői elszámolás</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label>Tartalom</label>
+                <textarea id="noteContent" class="form-control" rows="8"></textarea>
+            </div>
+            <button class="btn btn-dark" onclick="saveNote()"><i class="fas fa-save"></i> Mentés (Tudástár/txt)</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

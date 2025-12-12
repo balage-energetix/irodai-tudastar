@@ -1,0 +1,71 @@
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.feature-card {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Lean Trükkök Key Animation */
+.key-box {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+.key-box:hover {
+    background: #e9ecef;
+    transform: scale(1.02);
+}
+
+.key-cap {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #f8f9fa;
+    box-shadow: 0 2px 0 #888;
+    font-weight: bold;
+    margin-right: 5px;
+    font-family: monospace;
+    transition: 0.1s;
+}
+
+.key-box:hover .key-cap {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 #888; /* Gomb lenyomás effekt */
+    background: #d1d1d1;
+}
+
+/* Gallery */
+.carousel-inner img {
+    height: 500px;
+    object-fit: contain;
+    background: #000;
+}
+.thumb-img {
+    height: 80px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.2s;
+    object-fit: cover;
+}
+.thumb-img:hover, .thumb-img.active {
+    opacity: 1;
+    border: 3px solid #0d6efd;
+}
