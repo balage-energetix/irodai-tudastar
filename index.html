@@ -1,292 +1,292 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Irodai Tudástár - Nagyatád</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irodai Tudástár - Nagyatád</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="live-clock" class="position-fixed bottom-0 start-0 p-2 text-white bg-dark rounded-top-end shadow" style="z-index: 1040; font-family: monospace;">
-        --:--:--
-    </div>
+    <div id="live-clock" class="position-fixed bottom-0 start-0 p-2 text-white bg-dark rounded-top-end shadow" style="z-index: 1040; font-family: monospace;">
+        --:--:--
+    </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" onclick="showPage('home')"><i class="fas fa-briefcase"></i> Irodai Asszisztens</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('lean')">Trükkök</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('converter')">Átváltó</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('invoice-calc')">Számla Kalkulátor</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('map')">Térkép</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('chart')">Vizualizáló</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('gallery')">Galéria</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('checklist')">Check-lista</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-light ms-2" href="#" onclick="showPage('notes')">Feljegyzés</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" onclick="showPage('home')"><i class="fas fa-briefcase"></i> Irodai Asszisztens</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('lean')">Trükkök</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('converter')">Átváltó</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('invoice-calc')">Számla Kalkulátor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('map')">Térkép</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('chart')">Vizualizáló</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('gallery')">Galéria</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('checklist')">Check-lista</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-outline-light ms-2" href="#" onclick="showPage('notes')">Feljegyzés</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <div id="home" class="page-section container mt-5">
-        <div class="text-center mb-5">
-            <h1 class="display-4">Irodai Tudástár</h1>
-            <p class="lead">Válasszon funkciót a fenti menüből vagy az ikonok közül.</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('lean')"><div class="card-body text-center"><i class="fas fa-keyboard fa-3x mb-3 text-primary"></i><h5>Lean Trükkök</h5></div></div></div>
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('converter')"><div class="card-body text-center"><i class="fas fa-sync-alt fa-3x mb-3 text-danger"></i><h5>Átváltó</h5></div></div></div>
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('invoice-calc')"><div class="card-body text-center"><i class="fas fa-calculator fa-3x mb-3 text-secondary"></i><h5>Számla Kalkulátor</h5></div></div></div>
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('map')"><div class="card-body text-center"><i class="fas fa-map-marked-alt fa-3x mb-3 text-success"></i><h5>Térkép</h5></div></div></div>
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('chart')"><div class="card-body text-center"><i class="fas fa-chart-line fa-3x mb-3 text-warning"></i><h5>Vizualizáló</h5></div></div></div>
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('gallery')"><div class="card-body text-center"><i class="fas fa-images fa-3x mb-3 text-info"></i><h5>Képtár</h5></div></div></div>
-            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('checklist')"><div class="card-body text-center"><i class="fas fa-tasks fa-3x mb-3 text-secondary"></i><h5>Check-lista</h5></div></div></div>
-        </div>
-    </div>
+    <div id="home" class="page-section container mt-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4">Irodai Tudástár</h1>
+            <p class="lead">Válasszon funkciót a fenti menüből vagy az ikonok közül.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('lean')"><div class="card-body text-center"><i class="fas fa-keyboard fa-3x mb-3 text-primary"></i><h5>Lean Trükkök</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('converter')"><div class="card-body text-center"><i class="fas fa-sync-alt fa-3x mb-3 text-danger"></i><h5>Átváltó</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('invoice-calc')"><div class="card-body text-center"><i class="fas fa-calculator fa-3x mb-3 text-secondary"></i><h5>Számla Kalkulátor</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('map')"><div class="card-body text-center"><i class="fas fa-map-marked-alt fa-3x mb-3 text-success"></i><h5>Térkép</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('chart')"><div class="card-body text-center"><i class="fas fa-chart-line fa-3x mb-3 text-warning"></i><h5>Vizualizáló</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('gallery')"><div class="card-body text-center"><i class="fas fa-images fa-3x mb-3 text-info"></i><h5>Képtár</h5></div></div></div>
+            <div class="col-md-4"><div class="card h-100 feature-card" onclick="showPage('checklist')"><div class="card-body text-center"><i class="fas fa-tasks fa-3x mb-3 text-secondary"></i><h5>Check-lista</h5></div></div></div>
+        </div>
+    </div>
 
-    <div id="lean" class="page-section container mt-4 d-none">
-        <h2 class="mb-4"><i class="fas fa-keyboard"></i> Hasznos Billentyűkombinációk (40db)</h2>
-        <div class="row" id="shortcut-container"></div>
-    </div>
+    <div id="lean" class="page-section container mt-4 d-none">
+        <h2 class="mb-4"><i class="fas fa-keyboard"></i> Hasznos Billentyűkombinációk (40db)</h2>
+        <div class="row" id="shortcut-container"></div>
+    </div>
 
-    <div id="converter" class="page-section container mt-4 d-none">
-        <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
-            <h3 class="text-center mb-4">Univerzális Földgáz Átváltó</h3>
-            <p class="text-center text-muted">Írj bármelyik mezőbe, a többi automatikusan számolódik!</p>
-            
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Mennyiség (m³)</label>
-                    <div class="input-group input-hover-effect">
-                        <input type="number" id="inputM3" class="form-control" oninput="calcConverter('m3')">
-                        <span class="input-group-text">m³</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Energia (kWh)</label>
-                    <div class="input-group input-hover-effect">
-                        <input type="number" id="inputKwh" class="form-control" oninput="calcConverter('kwh')">
-                        <span class="input-group-text">kWh</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Energia (MJ)</label>
-                    <div class="input-group input-hover-effect">
-                        <input type="number" id="inputMj" class="form-control" oninput="calcConverter('mj')">
-                        <span class="input-group-text">MJ</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-4 pt-3 border-top">
-                <h5 class="mb-3"><i class="fas fa-cogs"></i> Átváltási Faktorok (Gáz fűtőérték)</h5>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">kWh/m³ (Nagyfűtőérték)</label>
-                        <input type="number" id="convFactorKwh" class="form-control" value="10.55" step="0.01" oninput="saveConversionFactors()">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">MJ/m³</label>
-                        <input type="number" id="convFactorMj" class="form-control" value="34.0" step="0.01" oninput="saveConversionFactors()">
-                    </div>
-                </div>
-                <small class="text-muted">Az itt beállított faktorok a böngészőben tárolódnak.</small>
-            </div>
-        </div>
-    </div>
-    
-    <div id="invoice-calc" class="page-section container mt-4 d-none">
-        <div class="card shadow p-4 mx-auto" style="max-width: 900px;">
-            <h2 class="text-center mb-4"><i class="fas fa-file-invoice-dollar"></i> Univerzális Számla Kalkulátor</h2>
-            <div class="row g-3 mb-4 align-items-end">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Felhasznált mennyiség (választható egység):</label>
-                    <div class="input-group">
-                        <input type="number" id="calcInputAmount" class="form-control" value="0" min="0" oninput="calculateInvoice()">
-                        <select id="calcUnit" class="form-select" onchange="calculateInvoice()">
-                            <option value="m3">m³</option>
-                            <option value="kwh">kWh</option>
-                            <option value="mj">MJ</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Gáz fűtőérték (kWh/m³)</label>
-                    <div class="input-group">
-                        <input type="number" id="calcFactorKwh" class="form-control" value="10.55" step="0.01" oninput="saveFactors(); calculateInvoice()">
-                        <span class="input-group-text">kWh/m³</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="text-end mb-0">Összesen fizetendő (Áfával):</h4>
-                    <p class="display-6 text-end text-primary" id="calcResult">0 Ft</p>
-                </div>
-            </div>
+    <div id="converter" class="page-section container mt-4 d-none">
+        <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
+            <h3 class="text-center mb-4">Univerzális Földgáz Átváltó</h3>
+            <p class="text-center text-muted">Írj bármelyik mezőbe, a többi automatikusan számolódik!</p>
+            
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Mennyiség (m³)</label>
+                    <div class="input-group input-hover-effect">
+                        <input type="number" id="inputM3" class="form-control" oninput="calcConverter('m3')">
+                        <span class="input-group-text">m³</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Energia (kWh)</label>
+                    <div class="input-group input-hover-effect">
+                        <input type="number" id="inputKwh" class="form-control" oninput="calcConverter('kwh')">
+                        <span class="input-group-text">kWh</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Energia (MJ)</label>
+                    <div class="input-group input-hover-effect">
+                        <input type="number" id="inputMj" class="form-control" oninput="calcConverter('mj')">
+                        <span class="input-group-text">MJ</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 pt-3 border-top">
+                <h5 class="mb-3"><i class="fas fa-cogs"></i> Átváltási Faktorok (Gáz fűtőérték)</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">kWh/m³ (Nagyfűtőérték)</label>
+                        <input type="number" id="convFactorKwh" class="form-control" value="10.55" step="0.01" oninput="saveConversionFactors()">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">MJ/m³</label>
+                        <input type="number" id="convFactorMj" class="form-control" value="34.0" step="0.01" oninput="saveConversionFactors()">
+                    </div>
+                </div>
+                <small class="text-muted">Az itt beállított faktorok a böngészőben tárolódnak.</small>
+            </div>
+        </div>
+    </div>
+    
+    <div id="invoice-calc" class="page-section container mt-4 d-none">
+        <div class="card shadow p-4 mx-auto" style="max-width: 900px;">
+            <h2 class="text-center mb-4"><i class="fas fa-file-invoice-dollar"></i> Univerzális Számla Kalkulátor</h2>
+            <div class="row g-3 mb-4 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Felhasznált mennyiség (választható egység):</label>
+                    <div class="input-group">
+                        <input type="number" id="calcInputAmount" class="form-control" value="0" min="0" oninput="calculateInvoice()">
+                        <select id="calcUnit" class="form-select" onchange="calculateInvoice()">
+                            <option value="m3">m³</option>
+                            <option value="kwh">kWh</option>
+                            <option value="mj">MJ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Gáz fűtőérték (kWh/m³)</label>
+                    <div class="input-group">
+                        <input type="number" id="calcFactorKwh" class="form-control" value="10.55" step="0.01" oninput="saveFactors(); calculateInvoice()">
+                        <span class="input-group-text">kWh/m³</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="text-end mb-0">Összesen fizetendő (Áfával):</h4>
+                    <p class="display-6 text-end text-primary" id="calcResult">0 Ft</p>
+                </div>
+            </div>
 
-            <h4 class="mb-3 mt-4">Aktuális Díjszabás (Lakossági Egyetemes Szolgáltatás)</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered table-sm">
-                    <thead class="table-info">
-                        <tr>
-                            <th>Díjtétel</th>
-                            <th>Mértékegység</th>
-                            <th>Nagykereskedelmi (alap) ár (Ft)</th>
-                            <th>ÁFA (%)</th>
-                            <th>Módosítható egységár (Ft/Egység)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tariff-table-body">
-                        </tbody>
-                </table>
-            </div>
-            <small class="text-muted mt-2">Figyelem: Az árváltozásokért az üzemeltető nem vállal felelősséget. Az egységárak a táblázat utolsó oszlopában módosíthatók.</small>
-        </div>
-    </div>
+            <h4 class="mb-3 mt-4">Aktuális Díjszabás (Lakossági Egyetemes Szolgáltatás)</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm">
+                    <thead class="table-info">
+                        <tr>
+                            <th>Díjtétel</th>
+                            <th>Mértékegység</th>
+                            <th>Nagykereskedelmi (alap) ár (Ft)</th>
+                            <th>ÁFA (%)</th>
+                            <th>Módosítható egységár (Ft/Egység)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tariff-table-body">
+                        </tbody>
+                </table>
+            </div>
+            <small class="text-muted mt-2">Figyelem: Az árváltozásokért az üzemeltető nem vállal felelősséget. Az egységárak a táblázat utolsó oszlopában módosíthatók.</small>
+        </div>
+    </div>
 
-    <div id="map" class="page-section container-fluid mt-4 d-none position-relative">
-        <div class="d-flex justify-content-between mb-2 px-3">
-            <h4>Térképkezelő</h4>
-            <button class="btn btn-outline-danger btn-sm" onclick="exportMapPDF()"><i class="fas fa-file-pdf"></i> Térkép mentése PDF-be</button>
-        </div>
-        <div id="map-capture-area" style="height: 75vh; width: 100%; border: 2px solid #ddd;">
-            <div id="map-container" style="width: 100%; height: 100%;"></div>
-        </div>
-        
-        <div id="map-context-menu" class="context-menu">
-            <div onclick="addMapMarker('light')"><i class="fas fa-lightbulb text-warning"></i> Közvilágítás hiba</div>
-            <div onclick="addMapMarker('roadwork')"><i class="fas fa-digging text-primary"></i> Közterület bontás</div>
-            <div onclick="addMapMarker('pothole')"><i class="fas fa-exclamation-triangle text-danger"></i> Útburkolati hiba</div>
-        </div>
-    </div>
+    <div id="map" class="page-section container-fluid mt-4 d-none position-relative">
+        <div class="d-flex justify-content-between mb-2 px-3">
+            <h4>Térképkezelő</h4>
+            <button class="btn btn-outline-danger btn-sm" onclick="exportMapPDF()"><i class="fas fa-file-pdf"></i> Térkép mentése PDF-be</button>
+        </div>
+        <div id="map-capture-area" style="height: 75vh; width: 100%; border: 2px solid #ddd;">
+            <div id="map-container" style="width: 100%; height: 100%;"></div>
+        </div>
+        
+        <div id="map-context-menu" class="context-menu">
+            <div onclick="addMapMarker('light')"><i class="fas fa-lightbulb text-warning"></i> Közvilágítás hiba</div>
+            <div onclick="addMapMarker('roadwork')"><i class="fas fa-digging text-primary"></i> Közterület bontás</div>
+            <div onclick="addMapMarker('pothole')"><i class="fas fa-exclamation-triangle text-danger"></i> Útburkolati hiba</div>
+        </div>
+    </div>
 
-    <div id="chart" class="page-section container-fluid mt-4 d-none">
-        <h2>Adat Vizualizáció</h2>
-        
-        <div class="table-responsive mb-4 shadow-sm p-2 bg-body rounded">
-            <table class="table table-bordered table-hover align-middle" id="viz-table">
-                <thead class="table-light">
-                    <tr>
-                        <th>Adatsor Neve</th>
-                        <th>Jan</th><th>Feb</th><th>Már</th><th>Ápr</th><th>Máj</th><th>Jún</th>
-                        <th>Júl</th><th>Aug</th><th>Szep</th><th>Okt</th><th>Nov</th><th>Dec</th>
-                        <th>Művelet</th>
-                    </tr>
-                </thead>
-                <tbody id="viz-tbody"></tbody>
-            </table>
-            <button class="btn btn-success btn-sm m-2" onclick="addNewDataRow()">+ Új Sor</button>
-            <button class="btn btn-primary btn-sm m-2" onclick="updateChart()"><i class="fas fa-sync"></i> Diagram Frissítése</button>
-        </div>
+    <div id="chart" class="page-section container-fluid mt-4 d-none">
+        <h2>Adat Vizualizáció</h2>
+        
+        <div class="table-responsive mb-4 shadow-sm p-2 bg-body rounded">
+            <table class="table table-bordered table-hover align-middle" id="viz-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Adatsor Neve</th>
+                        <th>Jan</th><th>Feb</th><th>Már</th><th>Ápr</th><th>Máj</th><th>Jún</th>
+                        <th>Júl</th><th>Aug</th><th>Szep</th><th>Okt</th><th>Nov</th><th>Dec</th>
+                        <th>Művelet</th>
+                    </tr>
+                </thead>
+                <tbody id="viz-tbody"></tbody>
+            </table>
+            <button class="btn btn-success btn-sm m-2" onclick="addNewDataRow()">+ Új Sor</button>
+            <button class="btn btn-primary btn-sm m-2" onclick="updateChart()"><i class="fas fa-sync"></i> Diagram Frissítése</button>
+        </div>
 
-        <div class="card p-3 shadow">
-            <canvas id="myChart" style="max-height: 500px;"></canvas>
-        </div>
-    </div>
+        <div class="card p-3 shadow">
+            <canvas id="myChart" style="max-height: 500px;"></canvas>
+        </div>
+    </div>
 
-    <div id="gallery" class="page-section container mt-4 d-none">
-        <div class="text-center mb-4">
-            <label class="btn btn-primary btn-lg shadow">
-                <i class="fas fa-folder-open"></i> Mappa Tallózása
-                <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
-            </label>
-            <div class="mt-2 text-muted"><small>Válasszon egy képeket tartalmazó mappát a megjelenítésükhöz. (Ez a funkció egyes böngészőkben korlátozottan működhet.)</small></div>
-        </div>
-        
-        <div id="loading-message" class="alert alert-info mt-3 d-none text-center">
-            <i class="fas fa-spinner fa-spin"></i> Képek betöltése folyamatban...
-        </div>
+    <div id="gallery" class="page-section container mt-4 d-none">
+        <div class="text-center mb-4">
+            <label class="btn btn-primary btn-lg shadow">
+                <i class="fas fa-folder-open"></i> Mappa Tallózása
+                <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+            </label>
+            <div class="mt-2 text-muted"><small>Válasszon egy képeket tartalmazó mappát a megjelenítésükhöz. (Ez a funkció egyes böngészőkben korlátozottan működhet.)</small></div>
+        </div>
+        
+        <div id="loading-message" class="alert alert-info mt-3 d-none text-center">
+            <i class="fas fa-spinner fa-spin"></i> Képek betöltése folyamatban...
+        </div>
 
-        <div id="gallery-viewer" class="carousel slide shadow rounded bg-dark" data-bs-ride="false" style="display:none;">
-            <div class="carousel-inner" id="carousel-items"></div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#gallery-viewer" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#gallery-viewer" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
-        </div>
-        <div class="row mt-3 g-2" id="thumbnails"></div>
-    </div>
+        <div id="gallery-viewer" class="carousel slide shadow rounded bg-dark" data-bs-ride="false" style="display:none;">
+            <div class="carousel-inner" id="carousel-items"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#gallery-viewer" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#gallery-viewer" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+        <div class="row mt-3 g-2" id="thumbnails"></div>
+    </div>
 
-    <div id="checklist" class="page-section container mt-4 d-none">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Feladatlista</h2>
-            <button class="btn btn-danger" onclick="exportChecklistPDF()"><i class="fas fa-file-pdf"></i> Exportálás (Tudástár/PDF)</button>
-        </div>
-        <div id="checklist-content" class="p-3 bg-white text-dark">
-            <div class="text-end text-muted mb-2 small export-date-header"></div> <div class="row g-3">
-                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-info text-white p-2 text-center rounded">Napi</h5><ul class="list-group list-group-flush" id="list-daily"></ul></div></div>
-                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-success text-white p-2 text-center rounded">Heti</h5><ul class="list-group list-group-flush" id="list-weekly"></ul></div></div>
-                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-warning text-dark p-2 text-center rounded">Havi</h5><ul class="list-group list-group-flush" id="list-monthly"></ul></div></div>
-                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-primary text-white p-2 text-center rounded">Éves</h5><ul class="list-group list-group-flush" id="list-yearly"></ul></div></div>
-            </div>
-        </div>
-    </div>
+    <div id="checklist" class="page-section container mt-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Feladatlista</h2>
+            <button class="btn btn-danger" onclick="exportChecklistPDF()"><i class="fas fa-file-pdf"></i> Exportálás (Tudástár/PDF)</button>
+        </div>
+        <div id="checklist-content" class="p-3 bg-white text-dark">
+            <div class="text-end text-muted mb-2 small export-date-header"></div> <div class="row g-3">
+                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-info text-white p-2 text-center rounded">Napi</h5><ul class="list-group list-group-flush" id="list-daily"></ul></div></div>
+                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-success text-white p-2 text-center rounded">Heti</h5><ul class="list-group list-group-flush" id="list-weekly"></ul></div></div>
+                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-warning text-dark p-2 text-center rounded">Havi</h5><ul class="list-group list-group-flush" id="list-monthly"></ul></div></div>
+                <div class="col-md-3"><div class="border p-2 rounded h-100"><h5 class="bg-primary text-white p-2 text-center rounded">Éves</h5><ul class="list-group list-group-flush" id="list-yearly"></ul></div></div>
+            </div>
+        </div>
+    </div>
 
-    <div id="notes" class="page-section container mt-4 d-none">
-        <div class="card p-4 mx-auto shadow" style="max-width: 800px;">
-            <div class="d-flex justify-content-between">
-                <h3>Új Feljegyzés</h3>
-                <span id="note-date" class="badge bg-secondary align-self-center"></span>
-            </div>
-            <hr>
-            <div class="mb-3">
-                <label class="fw-bold">Ügykör kiválasztása:</label>
-                <select id="noteCategory" class="form-select form-select-lg mb-3">
-                    <option>Közterület felbontás</option>
-                    <option>Tervezői hozzájárulás</option>
-                    <option>Közvilágítási hiba</option>
-                    <option>Bérlői elszámolás</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="fw-bold">Leírás:</label>
-                <textarea id="noteContent" class="form-control" rows="10" placeholder="Írja ide a feljegyzést..."></textarea>
-            </div>
-            <button class="btn btn-dark w-100 btn-lg" onclick="saveNote()"><i class="fas fa-save"></i> Mentés (Tudástár/TXT)</button>
-        </div>
-    </div>
+    <div id="notes" class="page-section container mt-4 d-none">
+        <div class="card p-4 mx-auto shadow" style="max-width: 800px;">
+            <div class="d-flex justify-content-between">
+                <h3>Új Feljegyzés</h3>
+                <span id="note-date" class="badge bg-secondary align-self-center"></span>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="fw-bold">Ügykör kiválasztása:</label>
+                <select id="noteCategory" class="form-select form-select-lg mb-3">
+                    <option>Közterület felbontás</option>
+                    <option>Tervezői hozzájárulás</option>
+                    <option>Közvilágítási hiba</option>
+                    <option>Bérlői elszámolás</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="fw-bold">Leírás:</label>
+                <textarea id="noteContent" class="form-control" rows="10" placeholder="Írja ide a feljegyzést..."></textarea>
+            </div>
+            <button class="btn btn-dark w-100 btn-lg" onclick="saveNote()"><i class="fas fa-save"></i> Mentés (Tudástár/TXT)</button>
+        </div>
+    </div>
 
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-        <div class="btn-group dropup">
-            <button type="button" class="btn btn-secondary dropdown-toggle rounded-circle shadow" data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;">
-                <i class="fas fa-cog"></i>
-            </button>
-            <ul class="dropdown-menu p-3 shadow">
-                <li><h6 class="dropdown-header">Stílus beállítások</h6></li>
-                <li>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="darkModeSwitch" onchange="toggleDarkMode()">
-                        <label class="form-check-label" for="darkModeSwitch">Éjszakai mód</label>
-                    </div>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <label class="form-label small">Háttérszín:</label>
-                    <input type="color" class="form-control form-control-color w-100" id="bgColorPicker" value="#f4f6f9" oninput="changeBgColor(this.value)">
-                </li>
-            </ul>
-        </div>
-    </div>
-    
-    <footer class="footer mt-auto py-3 bg-light border-top">
-        <div class="container text-center">
-            <span class="text-muted">© 2024 Irodai Tudástár | Nagyatád - Verzió 1.1</span>
-        </div>
-    </footer>
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+        <div class="btn-group dropup">
+            <button type="button" class="btn btn-secondary dropdown-toggle rounded-circle shadow" data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;">
+                <i class="fas fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu p-3 shadow">
+                <li><h6 class="dropdown-header">Stílus beállítások</h6></li>
+                <li>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="darkModeSwitch" onchange="toggleDarkMode()">
+                        <label class="form-check-label" for="darkModeSwitch">Éjszakai mód</label>
+                    </div>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <label class="form-label small">Háttérszín:</label>
+                    <input type="color" class="form-control form-control-color w-100" id="bgColorPicker" value="#f4f6f9" oninput="changeBgColor(this.value)">
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer class="footer mt-auto py-3 bg-light border-top">
+        <div class="container text-center">
+            <span class="text-muted">© 2024 Irodai Tudástár | Nagyatád - Verzió 1.1</span>
+        </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="script.js"></script> </body>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
